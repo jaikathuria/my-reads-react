@@ -7,19 +7,33 @@ import BookShelf from './BookShelf'
 
 export default class BookList extends Component {
   static propTypes = {
-    shelfs: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      heading: PropTypes.string.isRequired,
-    })).isRequired,
     books: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       shelf: PropTypes.string.isRequired,
       imageLinks: PropTypes.object.isRequired,
-      authors: PropTypes.arrayOf(PropTypes.string.isRequired)
-    }))
+      authors: PropTypes.arrayOf(PropTypes.string.isRequired),
+      id: PropTypes.string.isRequired,
+    })),
+    onShelfChange: PropTypes.func.isRequired
   }
+
+  shelfs = [
+    {
+      name: `currentlyReading`,
+      heading: `Currently Reading`
+    },
+    {
+      name: `wantToRead`,
+      heading: `Want to Read`
+    },
+    {
+      name: `read`,
+      heading: `Read`
+    },
+  ]
+
   render(){
-    const shelfs = this.props.shelfs
+    const shelfs = this.shelfs
     const books = this.props.books
 
     return (
@@ -34,6 +48,9 @@ export default class BookList extends Component {
                 title={shelf.heading}
                 key={index}
                 books={books.filter((book) => book.shelf === shelf.name)}
+                onShelfChange={(id,shelf)=>{
+                  this.props.onShelfChange(id,shelf)
+                }}
               />
             ))}
 

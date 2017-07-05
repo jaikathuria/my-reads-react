@@ -7,7 +7,8 @@ export default class BookShelf extends Component {
 
   static propTypes={
     title: PropTypes.string.isRequired,
-    books: PropTypes.array
+    books: PropTypes.array,
+    onShelfChange: PropTypes.func.isRequired
   }
 
   render(){
@@ -23,6 +24,10 @@ export default class BookShelf extends Component {
                 title={book.title}
                 author={book.authors[0]}
                 key={book.id}
+                shelf={book.shelf}
+                onShelfChange={(shelf)=>{
+                  this.props.onShelfChange(book.id,shelf)
+                }}
               />
             ))}
           </ol>

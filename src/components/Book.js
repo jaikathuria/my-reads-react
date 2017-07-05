@@ -7,7 +7,14 @@ export default class Book extends Component {
     imageURL: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
+    shelf: PropTypes.string.isRequired,
+    onShelfChange: PropTypes.func.isRequired
   }
+
+  changeShelf = (e) => {
+    this.props.onShelfChange(e.target.value)
+  }
+
   render(){
     return (
       <li>
@@ -15,7 +22,7 @@ export default class Book extends Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.imageURL}")` }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select onChange={this.changeShelf} value={this.props.shelf}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>

@@ -8,28 +8,23 @@ import SearchPage from './components/SearchPage'
 import BookList from './components/BookList'
 
 class BooksApp extends Component {
+
   state = {
     books: []
   }
 
-
-  shelfs = [
-    {
-      name: `currentlyReading`,
-      heading: `Currently Reading`
-    },
-    {
-      name: `wantToRead`,
-      heading: `Want to Read`
-    },
-    {
-      name: `read`,
-      heading: `Read`
-    },
-  ]
-
   componentDidMount(){
-    BooksAPI.getAll().then((books) => this.setState({ books }))
+    this.fetchMyBooks()
+  }
+
+  fetchMyBooks = () => {
+    BooksAPI.getAll().then((books) => this.setState({ books })).then(()=>{console.log(this.state.books)})
+  }
+
+  changeShelf = (id,shelf) => {
+    BooksAPI.update({id},shelf).then(()=>{
+      this.fetchMyBooks()
+    })
   }
 
   render() {
@@ -39,7 +34,9 @@ class BooksApp extends Component {
             exact
             path="/search"
             render={() => (
-              <SearchPage/>
+              <SearchPage
+                myBooks={this.state.books}
+              />
             )}
           />
 
@@ -48,8 +45,10 @@ class BooksApp extends Component {
             path="/"
             render={()=>(
               <BookList
-                shelfs={this.shelfs}
                 books={this.state.books}
+                onShelfChange={(id,shelf)=>{
+                  this.changeShelf(id,shelf)
+                }}
               />
             )}
           />
