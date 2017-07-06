@@ -52,8 +52,7 @@ export default class BookList extends Component {
                   this.props.onShelfChange(id,shelf)
                 }}
               />
-            ))}
-
+            )) }
           </div>
         </div>
         <div className="open-search">

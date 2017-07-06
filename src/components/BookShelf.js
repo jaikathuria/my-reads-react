@@ -18,15 +18,15 @@ export default class BookShelf extends Component {
         <h2 className="bookshelf-title">{this.props.title}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {books.map((book)=>(
+            {books.map((book,index)=>(
               <Book
-                imageURL={book.imageLinks.thumbnail}
+                imageURL={book.imageLinks}
                 title={book.title}
-                author={book.authors[0]}
-                key={book.id}
+                author={book.authors}
+                key={``.concat(book.id,index)}
                 shelf={book.shelf}
                 onShelfChange={(shelf)=>{
-                  this.props.onShelfChange(book.id,shelf)
+                this.props.onShelfChange(book.id,shelf)
                 }}
               />
             ))}

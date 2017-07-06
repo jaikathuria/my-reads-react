@@ -7,7 +7,7 @@ import './App.css'
 import SearchPage from './components/SearchPage'
 import BookList from './components/BookList'
 
-class BooksApp extends Component {
+export default class BooksApp extends Component {
 
   state = {
     books: []
@@ -18,7 +18,7 @@ class BooksApp extends Component {
   }
 
   fetchMyBooks = () => {
-    BooksAPI.getAll().then((books) => this.setState({ books })).then(()=>{console.log(this.state.books)})
+    BooksAPI.getAll().then((books) => this.setState({ books }))
   }
 
   changeShelf = (id,shelf) => {
@@ -33,9 +33,13 @@ class BooksApp extends Component {
           <Route
             exact
             path="/search"
-            render={() => (
+            render={({history}) => (
               <SearchPage
                 myBooks={this.state.books}
+                onShelfChange={(id,shelf)=>{
+                  this.changeShelf(id,shelf)
+                  history.push('/')
+                }}
               />
             )}
           />
@@ -56,5 +60,3 @@ class BooksApp extends Component {
     )
   }
 }
-
-export default BooksApp

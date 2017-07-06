@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { PropTypes }  from 'prop-types'
 
-
 export default class Book extends Component {
   static propTypes = {
-    imageURL: PropTypes.string.isRequired,
+    imageURL: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
+    author: PropTypes.array,
     shelf: PropTypes.string.isRequired,
     onShelfChange: PropTypes.func.isRequired
   }
@@ -16,11 +15,16 @@ export default class Book extends Component {
   }
 
   render(){
+    const imageURL = this.props.imageURL.thumbnail || this.props.imageURL.smallThumbnail
     return (
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.imageURL}")` }}></div>
+            <div className="book-cover" style={{
+                width: 128,
+                height: 193,
+                backgroundImage: `url("${imageURL}")`
+              }}></div>
             <div className="book-shelf-changer">
               <select onChange={this.changeShelf} value={this.props.shelf}>
                 <option value="none" disabled>Move to...</option>
@@ -32,7 +36,12 @@ export default class Book extends Component {
             </div>
           </div>
           <div className="book-title">{`${this.props.title}`}</div>
-          <div className="book-authors">{`${this.props.author}`}</div>
+          {this.props.author && this.props.author.map((author,index)=>(
+            <div
+              className="book-authors"
+              key={index}
+            >{`${author}`}</div>
+          ))}
         </div>
       </li>
     )
