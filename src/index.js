@@ -5,6 +5,6 @@ import BooksApp from './App'
 import './index.css'
 
 ReactDOM.render(
-  <BrowserRouter history={history}>
+<BrowserRouter>
   <BooksApp/>
 </BrowserRouter>, document.getElementById('root'))

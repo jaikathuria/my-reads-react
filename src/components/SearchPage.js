@@ -9,7 +9,19 @@ export default class SearchPage extends Component {
 
   state = {
     books: [],
-    query: ``
+    query: ''
+  }
+
+  mergeArr = (arr,Arr) => {
+    return arr.map((item)=>{
+      Arr.forEach((Item)=>{
+        if(Item.id === item.id){
+          item.shelf = Item.shelf
+          return
+        }
+      })
+      return item
+    })
   }
 
   updateQuery = (event) => {
@@ -23,11 +35,15 @@ export default class SearchPage extends Component {
       BooksAPI.search(value, 10).then((books) => {
         if(books.length>0){
           books = books.filter((book)=>book.imageLinks)
+          books = this.mergeArr(books,this.props.myBooks)
+          this.setState({books})
         }
-        this.setState({books})
+        else{
+          this.setState({books: []})
+        }
       })
     } else {
-      this.setState({books: [], query: ``})
+      this.setState({books: [], query: ''})
     }
   }
 
@@ -62,7 +78,7 @@ export default class SearchPage extends Component {
             <ol className="books-grid"></ol>
           </div>
         </div>
-        {this.state.query !== `` && books.length > 0 && (<BookShelf title="Search Results" books={books} onShelfChange={(id, shelf) => {
+        {this.state.query !== '' && books.length > 0 && (<BookShelf title="Search Results" books={books} onShelfChange={(id, shelf) => {
           this.props.onShelfChange(id, shelf)
         }}/>)}
       </div>
