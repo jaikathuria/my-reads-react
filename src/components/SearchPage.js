@@ -13,21 +13,21 @@ export default class SearchPage extends Component {
   }
 
   updateQuery = (event) => {
-    const value = event.target.value
-    this.setState({query: value.trim()})
+    const value = event.target.value.trim()
+    this.setState({query: value})
+    this.searchData(value)
   }
 
-  handleEnterPress = (event) => {
-    if (event.key === 'Enter') {
-      const value = this.state.query
-      if (value.length !== 0) {
-        BooksAPI.search(value, 10).then((books) => {
+  searchData = (value) => {
+    if (value.length !== 0) {
+      BooksAPI.search(value, 10).then((books) => {
+        if(books.length>0){
           books = books.filter((book)=>book.imageLinks)
-          this.setState({books})
-        })
-      } else {
-        this.setState({books: [], query: ``})
-      }
+        }
+        this.setState({books})
+      })
+    } else {
+      this.setState({books: [], query: ``})
     }
   }
 
@@ -51,7 +51,11 @@ export default class SearchPage extends Component {
           <div className="search-books-bar">
             <Link className="close-search" to="/">Close</Link>
             <div className="search-books-input-wrapper">
-              <input type="text" placeholder="Search by title or author" value={query} onChange={this.updateQuery} onKeyPress={this.handleEnterPress}/>
+              <input type="text"
+                placeholder="Search by title or author"
+                value={query}
+                onChange={this.updateQuery}
+              />
             </div>
           </div>
           <div className="search-books-results">
